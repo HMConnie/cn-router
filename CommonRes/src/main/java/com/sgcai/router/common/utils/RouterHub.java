@@ -8,12 +8,12 @@ public interface RouterHub {
 
     String APP = "/app";//宿主app
     String GROUP = "/group";//group 模块
-    String USER = "/user";//group 模块
+    String USER = "/user";//user 模块
 
     String SERVICE = "/service";//service 服务解耦组件模块
 
     String APP_MAIN_ACTIVITY = APP + "/mainActivity";//MainActivity的路径
-    String APP_SPLASH_ACTIVITY = APP + "/SplashActivity";//MainActivity的路径
+    String APP_SPLASH_ACTIVITY = APP + "/SplashActivity";//SplashActivity的路径
     String GROUP_GROUPLIST_ACTIVITY = GROUP + "/GroupListActivity";//GroupListActivity的路径
     String GROUP_GROUPDETAIL_ACTIVITY = GROUP + "/GroupDetailActivity";//GroupDetailActivity的路径
     String USER_LOGIN_ACTIVITY = USER + "/LoginActivity";//LoginActivity的路径

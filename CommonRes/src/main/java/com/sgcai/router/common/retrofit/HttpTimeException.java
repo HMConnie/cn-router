@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.sgcai.router.common.retrofit.model.NetWorkErrorResult;
 import com.sgcai.router.common.utils.AppUtil;
+import com.sgcai.router.common.utils.EMUtil;
 import com.sgcai.router.common.utils.GsonUtil;
 
 import java.net.ConnectException;
@@ -44,6 +45,7 @@ public class HttpTimeException extends RuntimeException {
                     || throwable instanceof SocketException)) {
                 return MESSAGE_CONNIECT_NET_ERROR;
             } else {
+                EMUtil.reportUMError(throwable);
                 return MESSAGE_UNKWON_NET_ERROR;
             }
         } else {

@@ -77,6 +77,7 @@ public class HttpTimeException extends RuntimeException {
             } else {
                 mMessage = TextUtils.isEmpty(result) ? MESSAGE_UNKWON_NET_ERROR : result;
             }
+            EMUtil.reportUMError(code, result, original);
         }
 
 

@@ -75,7 +75,6 @@ public class NewsLifecycleHandler implements Application.ActivityLifecycleCallba
     // If you want a static function you can use to check if your application is
     // foreground/background, you can use the following:
 
-
     public boolean isApplicationVisible() {
         return started > stopped;
     }
@@ -101,7 +100,7 @@ public class NewsLifecycleHandler implements Application.ActivityLifecycleCallba
     }
 
     public void finishActivity(Class<Activity> clazz) {
-        if (!hasMainActivity(clazz)) return;
+        if (!hasActivity(clazz)) return;
 
         for (int i = 0; i < activityStack.size(); i++) {
             Activity activity = activityStack.get(i);
@@ -118,22 +117,22 @@ public class NewsLifecycleHandler implements Application.ActivityLifecycleCallba
             finishAllActivity();
             MobclickAgent.onKillProcess(App.getInstance());//保存统计信息
         } catch (Exception e) {
-            e.printStackTrace();
+            LogUtil.e(BuildConfig.APPLICATION_ID, "appExit catch exception.", e);
         } finally {
             ActivityManager activityMgr = (ActivityManager) App.getInstance().getSystemService(Context.ACTIVITY_SERVICE);
             activityMgr.killBackgroundProcesses(App.getInstance().getPackageName());
         }
     }
 
-    public boolean hasMainActivity(Class<Activity> clazz) {
-        boolean hasMainActivity = false;
+    public boolean hasActivity(Class<Activity> clazz) {
+        boolean hasActivity = false;
         for (int i = 0, size = activityStack.size(); i < size; i++) {
             if (null != activityStack.get(i) && activityStack.get(i).getClass() == clazz) {
-                hasMainActivity = true;
+                hasActivity = true;
                 break;
             }
         }
-        return hasMainActivity;
+        return hasActivity;
     }
 
     public Activity fromActivity() {

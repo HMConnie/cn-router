@@ -42,10 +42,11 @@ public class App extends Application implements DealUnKnowException.ExceptionCal
     public NewsLifecycleHandler getNewsLifecycleHandler() {
         return mNewsLifecycleHandler;
     }
-
-
     public RefWatcher getRefWatcher() {
         return mRefWatcher;
+    }
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 
     @Override
@@ -98,10 +99,6 @@ public class App extends Application implements DealUnKnowException.ExceptionCal
         UMConfigure.init(this, umAppKey, umChannel, UMConfigure.DEVICE_TYPE_PHONE, null);
         MobclickAgent.setSessionContinueMillis(1000); // 设置session的间隔时间
         MobclickAgent.setCatchUncaughtExceptions(BuildConfig.DEBUG); //release时,关闭错误统计、自己捕获错误信息
-    }
-
-    public AppComponent getAppComponent() {
-        return appComponent;
     }
 
     @Override

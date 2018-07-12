@@ -4,7 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.sgcai.router.common.app.NewsLifecycleHandler;
 import com.sgcai.router.common.retrofit.ServiceGenerator;
+import com.squareup.leakcanary.RefWatcher;
 
 import dagger.Component;
 
@@ -18,10 +20,11 @@ public interface AppComponent {
 
     void inject(Application application);
 
-    SharedPreferences getSharedPreferences();
-
     Context getApplicationContext();
 
     ServiceGenerator getServiceGenerator();
 
+    NewsLifecycleHandler provideLifecycleHandler();
+
+    RefWatcher provideRefWatcher();
 }

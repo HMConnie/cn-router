@@ -8,13 +8,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
         sourceCompatibility JavaVersion.VERSION_1_7
     }
-
+    signingConfigs {
+        debug {
+            storeFile file(project.file("keystore/SGCaiAndroid.jks"))
+            keyAlias 'sgcai'
+            keyPassword '11111111'
+            storePassword '11111111'
+        }
+    }
     defaultConfig {
         applicationId "com.sgcai.router.app"
         minSdkVersion rootProject.ext.android["minSdkVersion"]
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
+        multiDexEnabled rootProject.ext.android["multiDex"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         javaCompileOptions {
             annotationProcessorOptions {
@@ -38,6 +46,10 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
+            def names = project.file("proguard").list()
+            for (def name in names) {
+                proguardFile 'proguard/' + name //添加的混淆集合中
+            }
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -66,5 +78,4 @@ dependencies {
     debugImplementation rootProject.ext.dependencies["canary-debug"]
     releaseImplementation rootProject.ext.dependencies["canary-release"]
     testImplementation rootProject.ext.dependencies["canary-release"]
-    api rootProject.ext.dependencies["androideventbus"]
 }

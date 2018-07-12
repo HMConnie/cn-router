@@ -4,7 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.sgcai.router.common.app.NewsLifecycleHandler;
 import com.sgcai.router.common.retrofit.ServiceGenerator;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import dagger.Module;
 import dagger.Provides;
@@ -27,16 +30,23 @@ public class AppModule {
         return app;
     }
 
-    @Provides
-    @ApplicationScope
-    SharedPreferences providerSP() {
-        return app.getSharedPreferences("app", Context.MODE_PRIVATE);
-    }
-
 
     @Provides
     @ApplicationScope
     ServiceGenerator provideServiceGenerator() {
         return new ServiceGenerator();
+    }
+
+
+    @Provides
+    @ApplicationScope
+    NewsLifecycleHandler provideLifecycleHandler() {
+        return new NewsLifecycleHandler();
+    }
+
+    @Provides
+    @ApplicationScope
+    RefWatcher provideRefWatcher() {
+        return LeakCanary.install(app);
     }
 }

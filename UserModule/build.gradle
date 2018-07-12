@@ -8,6 +8,5 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     api project(":CommonRes")
     api project(":CommonService")
-    api rootProject.ext.dependencies["androideventbus"]
 
 }

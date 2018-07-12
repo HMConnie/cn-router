@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.sgcai.router.common.base.BaseActivity;
+import com.sgcai.router.common.component.AppComponent;
 import com.sgcai.router.common.utils.GlobalConstants;
 import com.sgcai.router.common.utils.RouterHub;
 import com.sgcai.router.group.R;
@@ -21,7 +23,7 @@ import com.sgcai.router.group.R;
  */
 
 @Route(path = RouterHub.GROUP_GROUPLIST_ACTIVITY)
-public class GroupListActivity extends AppCompatActivity implements View.OnClickListener {
+public class GroupListActivity extends BaseActivity implements View.OnClickListener {
 
     @Autowired(name = GlobalConstants.BUNDLE_STR_KEY)
     String data;
@@ -29,6 +31,11 @@ public class GroupListActivity extends AppCompatActivity implements View.OnClick
 
     private TextView mTextView;
     private Button mButton;
+
+    @Override
+    public void inject(AppComponent appComponent) {
+        ARouter.getInstance().inject(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +46,6 @@ public class GroupListActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initView() {
-        ARouter.getInstance().inject(this);
         mTextView = (TextView) findViewById(R.id.textView);
         mButton = (Button) findViewById(R.id.btn_detail);
         mButton.setOnClickListener(this);

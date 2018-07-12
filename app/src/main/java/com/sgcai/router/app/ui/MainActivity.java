@@ -1,8 +1,6 @@
 package com.sgcai.router.app.ui;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +13,8 @@ import com.alibaba.android.arouter.launcher.ARouter;
 import com.sgcai.router.app.R;
 import com.sgcai.router.app.compontent.DaggerMainActivityComponent;
 import com.sgcai.router.common.app.App;
+import com.sgcai.router.common.base.BaseActivity;
+import com.sgcai.router.common.component.AppComponent;
 import com.sgcai.router.common.retrofit.ServiceGenerator;
 import com.sgcai.router.common.utils.EventBusTags;
 import com.sgcai.router.common.utils.GlobalConstants;
@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 
 @Route(path = RouterHub.APP_MAIN_ACTIVITY)
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
 
     private Button mButton1;
@@ -46,9 +46,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Autowired(name = RouterHub.USER_COMMUNITION_SERVICE)
     UserService userService;
 
-
-    @Inject
-    SharedPreferences sharedPreferences;
 
     @Inject
     Toast toast;
@@ -65,9 +62,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
     }
 
-    private void initView() {
-        DaggerMainActivityComponent.builder().appComponent(App.getInstance().getAppComponent()).build().inject(this);
+    @Override
+    public void inject(AppComponent appComponent) {
+        DaggerMainActivityComponent.builder().appComponent(appComponent).build().inject(this);
         ARouter.getInstance().inject(this);
+    }
+
+    private void initView() {
         EventBus.getDefault().register(this);
         mButton1 = (Button) findViewById(R.id.button1);
         mButton2 = (Button) findViewById(R.id.button2);
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         Log.e(App.class.getSimpleName(), serviceGenerator.toString());
-        Log.e(App.class.getSimpleName(), sharedPreferences.toString());
         Log.e(App.class.getSimpleName(), toast.toString());
 
         mBtnNetwork = (Button) findViewById(R.id.btn_network);
@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     @Override
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
@@ -116,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .navigation(this);
                 break;
             case R.id.button2:
-
                 if (groupService == null) return;
 
                 GroupTO groupInfo = groupService.getGroupInfo();

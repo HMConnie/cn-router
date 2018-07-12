@@ -1,8 +1,16 @@
 <resources>
     <string name="public_app_name">ArmsComponent</string>
     <string name="public_module_name">app</string>
-    <string name="public_loading">加载中</string>
-    <string name="public_name_zhihu">知乎日报</string>
-    <string name="public_name_gank">干货集中营</string>
-    <string name="public_name_gold">稀土掘金</string>
+    <string name="public_loading">加载中...</string>
+    <string name="public_granted_title">权限访问</string>
+    <string name="public_dialog_positive">确定</string>
+    <string name="public_dialog_negative">取消</string>
+    <string name="public_dialog_notify_positive">马上设置</string>
+    <string name="public_notifty_title">开启消息推送</string>
+    <string name="public_unknown_app_title">开启应用安装设置</string>
+    <string name="public_notifty_message">及时接收消息，不再错过任何精彩</string>
+    <string name="public_unknown_app_message">请到 设置 > 安全隐私 > 安装未知应用 > BenBen > 打开允许安装应用 </string>
+    <string name="public_install_error_title">应用安装失败</string>
+    <string name="public_install_error_message">请到 设置 > 安全隐私 > 安装未知应用 > BenBen > 打开允许安装应用，或者到官方应用市场去下载安装</string>
+    <string name="public_granted_init"> 请到 权限管理 > 应用权限管理 > BenBen > 打开相应的权限开关 </string>
 </resources>

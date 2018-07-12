@@ -15,6 +15,7 @@ import com.sgcai.router.common.component.AppComponent;
 import com.sgcai.router.common.retrofit.HttpTimeException;
 import com.sgcai.router.common.retrofit.NetWorkSubscriber;
 import com.sgcai.router.common.retrofit.ServiceGenerator;
+import com.sgcai.router.common.utils.AppUtil;
 import com.sgcai.router.common.utils.RouterHub;
 import com.sgcai.taotao.common.service.AppService;
 import com.sgcai.taotao.user.R;
@@ -92,8 +93,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         dismissNetWorkDialog();
                         Log.e(LoginActivity.class.getSimpleName(), userResult.toString());
                         if (appService == null) return;
+                        runOnUiThreadDelay(2, new Runnable() {
+                            @Override
+                            public void run() {
+                                appService.loginCallback("登录成功了");
+                            }
+                        });
 
-                        appService.loginCallback("登录成功了");
                     }
                 });
     }

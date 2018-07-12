@@ -17,6 +17,7 @@ android {
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
+        multiDexEnabled rootProject.ext.android["multiDex"]
         testInstrumentationRunner rootProject.ext.dependencies["androidJUnitRunner"]
         javaCompileOptions {
             annotationProcessorOptions {

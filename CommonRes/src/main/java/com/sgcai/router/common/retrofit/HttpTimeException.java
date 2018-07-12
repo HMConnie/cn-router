@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 
 import com.sgcai.router.common.retrofit.model.NetWorkErrorResult;
+import com.sgcai.router.common.utils.AppUtil;
 import com.sgcai.router.common.utils.GsonUtil;
 
 import java.net.ConnectException;
@@ -64,12 +65,16 @@ public class HttpTimeException extends RuntimeException {
     public HttpTimeException(int code, String result, Request original) {
         this.mCode = code;
         this.original = original;
-        if (original != null) {
-            NetWorkErrorResult netWorkErrorResult = GsonUtil.fromJsontoBean(result, NetWorkErrorResult.class);
-            mReason = netWorkErrorResult != null ? netWorkErrorResult.msg : MESSAGE_UNKWON_NET_ERROR;
-            mMessage = netWorkErrorResult != null ? netWorkErrorResult.msgText : MESSAGE_UNKWON_NET_ERROR;
+        if (!AppUtil.isConnected()) {
+            mMessage = MESSAGE_NO_NET_ERROR;
         } else {
-            mMessage = TextUtils.isEmpty(result) ? MESSAGE_UNKWON_NET_ERROR : result;
+            if (original != null) {
+                NetWorkErrorResult netWorkErrorResult = GsonUtil.fromJsontoBean(result, NetWorkErrorResult.class);
+                mReason = netWorkErrorResult != null ? netWorkErrorResult.msg : MESSAGE_UNKWON_NET_ERROR;
+                mMessage = netWorkErrorResult != null ? netWorkErrorResult.msgText : MESSAGE_UNKWON_NET_ERROR;
+            } else {
+                mMessage = TextUtils.isEmpty(result) ? MESSAGE_UNKWON_NET_ERROR : result;
+            }
         }
 
 

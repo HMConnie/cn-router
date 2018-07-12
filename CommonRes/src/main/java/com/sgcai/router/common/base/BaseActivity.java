@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.sgcai.router.common.BuildConfig;
 import com.sgcai.router.common.R;
 import com.sgcai.router.common.app.App;
 import com.sgcai.router.common.component.AppComponent;
@@ -24,6 +25,7 @@ import com.sgcai.router.common.utils.AppUtil;
 import com.sgcai.router.common.utils.DialogUtil;
 import com.sgcai.router.common.utils.Events;
 import com.sgcai.router.common.utils.GlobalConstants;
+import com.sgcai.router.common.utils.LogUtil;
 import com.sgcai.router.common.utils.NotificationUtil;
 import com.sgcai.router.common.utils.PermissionUtil;
 import com.squareup.leakcanary.RefWatcher;
@@ -34,11 +36,17 @@ import com.zhy.autolayout.AutoLinearLayout;
 import com.zhy.autolayout.AutoRelativeLayout;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * 继承RxFragmentActivity，防止Rxjava内存泄露
@@ -131,6 +139,43 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
         if (!NotificationUtil.isNotificationEnabled(this)) {
             showDialog(DIALOG_ENABLE_NOFITY_REQ);
         }
+    }
+
+    /**
+     * 延迟执行
+     *
+     * @param seconds
+     * @param runnable
+     */
+    protected void runOnUiThreadDelay(final int seconds, final Runnable runnable) {
+        Observable.interval(0, 1, TimeUnit.SECONDS)
+                .take(seconds + 1)
+                .compose(this.<Long>bindToLifecycle())
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<Long, Integer>() {
+                    @Override
+                    public Integer call(Long increaseTime) {
+                        return seconds - increaseTime.intValue();
+                    }
+                })
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        LogUtil.i(BuildConfig.APPLICATION_ID, "runOnUIThreadDelay:onCompleted");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        LogUtil.e(BuildConfig.APPLICATION_ID, "runOnUIThreadDelay:onError");
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        runnable.run();
+                    }
+                });
     }
 
     /**

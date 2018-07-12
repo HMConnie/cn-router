@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -435,42 +437,16 @@ public final class AppUtil {
         }
         context.startActivity(localIntent);
     }
-
     /**
-     * 延迟执行任务,单位:秒
-     *
-     * @param activity
-     * @param seconds
-     * @param runnable
+     * 获取是否连接
      */
-    public static void runOnUiThreadDelay(BaseActivity activity, final int seconds, final Runnable runnable) {
-        Observable.interval(0, 1, TimeUnit.SECONDS)
-                .take(seconds + 1)
-                .compose(activity.<Long>bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<Long, Integer>() {
-                    @Override
-                    public Integer call(Long increaseTime) {
-                        return seconds - increaseTime.intValue();
-                    }
-                })
-                .subscribe(new Subscriber<Integer>() {
-                    @Override
-                    public void onCompleted() {
-                        LogUtil.i(BuildConfig.APPLICATION_ID, "runOnUIThreadDelay:onCompleted");
-                    }
+    public static boolean isConnected() {
+        ConnectivityManager manager = (ConnectivityManager) App.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (manager != null) {
+            NetworkInfo info = manager.getActiveNetworkInfo();
+            return (info != null && info.isConnected());
+        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        LogUtil.e(BuildConfig.APPLICATION_ID, "runOnUIThreadDelay:onError");
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        runnable.run();
-                    }
-                });
+        return false;
     }
 }

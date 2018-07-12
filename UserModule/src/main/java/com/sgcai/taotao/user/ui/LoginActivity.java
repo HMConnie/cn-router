@@ -23,6 +23,7 @@ import com.sgcai.taotao.user.compontent.DaggerLoginActivityComponent;
 import com.sgcai.taotao.user.network.api.UserServices;
 import com.sgcai.taotao.user.network.model.req.LoginVerifyParam;
 import com.sgcai.taotao.user.network.model.resp.UserResult;
+import com.trello.rxlifecycle.android.ActivityEvent;
 
 import javax.inject.Inject;
 
@@ -76,7 +77,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         showNetWorkDialog("加载中...");
         LoginVerifyParam loginVerifyParam = new LoginVerifyParam("18311380063", "123456789");
-        serviceGenerator.createService(loginVerifyParam, UserServices.class).login(loginVerifyParam.getBodyParams())
+        serviceGenerator.createService(loginVerifyParam, UserServices.class)
+                .login(loginVerifyParam.getBodyParams())
+                .compose(this.<UserResult>bindUntilEvent(ActivityEvent.DESTROY))
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

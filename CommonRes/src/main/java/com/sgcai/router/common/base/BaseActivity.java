@@ -164,6 +164,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
                     @Override
                     public void onCompleted() {
                         LogUtil.i(BuildConfig.APPLICATION_ID, "runOnUIThreadDelay:onCompleted");
+                        runnable.run();
                     }
 
                     @Override
@@ -173,7 +174,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
 
                     @Override
                     public void onNext(Integer integer) {
-                        runnable.run();
+                        LogUtil.i(BuildConfig.APPLICATION_ID, "runOnUIThreadDelay:onNext");
+
                     }
                 });
     }

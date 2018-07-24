@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Map;
 
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -26,26 +25,13 @@ public class RequestInterceptor implements Interceptor {
     private final String METHOD_PATCH = "PATCH"; // PATCH方法
     private final String ACCEPT_ENCODING = "Accept-Encoding"; // 请求头接收的gzip压缩
 
-    private final Map<String, String> mHeaders;
-
-    public RequestInterceptor(Map<String, String> headers) {
-        this.mHeaders = headers;
-    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         Request.Builder builder = request.newBuilder();
-
         /***去除gzip压缩格式**/
         builder.removeHeader(ACCEPT_ENCODING);
-
-        if (mHeaders != null && mHeaders.size() > 0) {//非空判断
-            for (String key : mHeaders.keySet()) {
-                String value = mHeaders.get(key);
-                builder.header(key, value);
-            }
-        }
         if (request.method().equals(METHOD_PATCH)) {
             builder.header(X_HTTP_METHOD_OVERRIDE, METHOD_PATCH);
         }

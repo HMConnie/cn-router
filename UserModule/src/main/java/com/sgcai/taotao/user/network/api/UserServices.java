@@ -7,6 +7,7 @@ import java.util.Map;
 
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -22,7 +23,7 @@ public interface UserServices {
      */
     @POST("/user/loginVerify")
     @FormUrlEncoded
-    Observable<UserResult> login(@FieldMap Map<String, String> map);
+    Observable<UserResult> login(@HeaderMap Map<String, String> headMap, @FieldMap Map<String, String> map);
 
 
 }

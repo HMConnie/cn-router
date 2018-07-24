@@ -62,7 +62,7 @@ public class BaseParam implements Serializable {
      * .header("timestamp", "" + timeStamp)
      * .header("sign", sign)
      */
-    public RequestInterceptor getInterceptor() {
+    public Map<String, String> getHeaders() {
         final Map<String, String> signMap = new HashMap<>();//sign加密所需的参数
         final Map<String, String> headers = new HashMap<>();//http请求所需的请求头
 
@@ -93,7 +93,6 @@ public class BaseParam implements Serializable {
         String sign = SignUtil.getSign(signMap);
         headers.put("sign", sign);//将sign拼接到请求头中
 
-        /**创建请求拦截器**/
-        return new RequestInterceptor(headers);
+        return headers;
     }
 }

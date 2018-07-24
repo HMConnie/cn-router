@@ -76,7 +76,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         showNetWorkDialog("加载中...");
         LoginVerifyParam loginVerifyParam = new LoginVerifyParam("18311380063", "123456789");
-        serviceGenerator.createService(loginVerifyParam, UserServices.class).login(loginVerifyParam.getBodyParams())
+        serviceGenerator.createService(UserServices.class).login(loginVerifyParam.getHeaders(), loginVerifyParam.getBodyParams())
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
